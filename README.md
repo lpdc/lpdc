@@ -42,7 +42,7 @@ menuentry 'Ubuntu, with Linux 4.19.105+' --class ubuntu --class gnu-linux --clas
 ```
 GRUB_DEFAULT="DEFAULT_KERNEL>NEW_MPTCP_KERNEL"
 
-For example:
+For example (Don't forget double quotes "...", and symbol '>'):
 GRUB_DEFAULT="gnulinux-advanced-b5b06d70-ea98-45ab-be8a-55b2fcec9baf>gnulinux-4.19.105+-advanced-b5b06d70-ea98-45ab-be8a-55b2fcec9baf"
 ```
 
@@ -54,8 +54,9 @@ GRUB_DEFAULT="gnulinux-advanced-b5b06d70-ea98-45ab-be8a-55b2fcec9baf>gnulinux-4.
 # reboot
 ```
    
-2.1) Carregar os módulos MPTCP:
+2.1) Load the MPTCP modules and inital setup (Note: see _mptcp_enable.sh / _mptcp_disable.sh):
 
+```
 #ls /lib/modules/4.19.105+/kernel/net/mptcp
 
 #lsmod
@@ -95,60 +96,79 @@ sysctl -w net.mptcp.mptcp_path_manager=fullmesh
 echo 5 > /sys/module/mptcp_fullmesh/parameters/num_subflows
 
 sysctl -p  (Nota: carrega tambem o que estah em /etc/sysctl.conf) 
+```
 
-2.2)
+
+2.2) (Optional) Visualize MPTCP setup (See: _mptcp_visualizer.sh)
+
+```
 #List the operating system settings
 
 #cat /etc/os-release
    
-
 #List all system variables
 
 sysctl -a
 
-
 #Verify the available TCP congestion control
 
 #cat /proc/sys/net/ipv4/tcp_congestion_control
+```
 
+2.3) (Optional) Load a new TCP congestion control (See: _mptcp_enable.sh  / _mptcp_disable.sh)
 
-#Load the new TCP congestion control
-
-modprobe balia
-
+```
+#modprobe balia
 
 #Setup the new MPTCP congestion control
 
 sysctl -w net.ipv4.tcp_congestion_control=balia
 
-
 #Setup the topology manager
 
 sysctl -w net.mptcp.mptcp_path_manager=fullmesh
 
-
 #Reload the changes
 
 sysctl -p
+```
 
+2.4 (Optional) Update the number of MPTCP subflows: (See: _mptcp_enable.sh / _mptcp_disable.sh)
 
-2.3) echo $subflows > /sys/module/mptcp_fullmesh/parameters/num_subflows
+```
+echo $subflows > /sys/module/mptcp_fullmesh/parameters/num_subflows
+```
 
-2.4) Setup the MPTCP scheduler (e.g. default, roundrobin or redundant):
+2.5) (Optional) Setup the MPTCP scheduler (e.g. default, roundrobin or redundant): (See: _mptcp_enable.sh / _mptcp_disable.sh)
 
-  sysctl -w net.mptcp.mptcp_scheduler=default
+```
+sysctl -w net.mptcp.mptcp_scheduler=default
 
 sysctl -p
+```
 
-2.5) In order to compare MPTCP flows with regular TCP flows~\cite{Sigcomm2013Walkthrough}:
-
+2.6) Disable MPTCP flows (See: _mptcp_disable.sh):
+```
 sysctl -w net.mptcp.mptcp_enabled=0
+```
 
-3.1) (Optional) karaf clean
+3) OpenDaylight Karaf (ODL) 0.8.4 (Note: the next steps were not tested in more recent versions of ODL):
 
-3.2) karaf
+3.1) (Optional) Restart setup (if Karaf crashes):
 
-3.3) feature:install \
+```
+karaf clean
+```
+
+3.2) Run ODL:
+```
+karaf
+```
+
+3.3) Install ODL plugins (See: _karaf_plugins_para_instalar.txt)
+
+```
+feature:install \
 odl-dluxapps-applications \ 
 odl-dlux-core odl-dluxapps-nodes \ 
 odl-dluxapps-yangui \ 
@@ -160,10 +180,11 @@ odl-l2switch-switch-rest \
 odl-neutron-service \
 odl-neutron-northbound-api \ 
 odl-neutron-hostconfig-ovs
+```
 
-4.1) Mininet
+4) Mininet
 
-#For tests in command line:
+4.1) For MPTCP tests in Mininet by command line:
 
 ```
 mn --topo tree,2 --controller remote,ip=10.0.0.10,port=6653 --switch=ovsk,protocols=OpenFlow13
@@ -171,7 +192,7 @@ mn --topo tree,2 --controller remote,ip=10.0.0.10,port=6653 --switch=ovsk,protoc
 mn --custom scenario.py --topo scenario --controller remote,ip=127.0.0.1,port=6653 --switch=ovsk,protocols=OpenFlow13
 ```
 
-4.2) (Optional) Mininet example for MPTCP
+4.2) (Optional) MPTCP example in Mininet:
 
 ```
 #!/usr/bin/python2
@@ -267,8 +288,8 @@ if __name__ == '__main__':
     topology()
 
 ```
-
-%%%%%Manual setup:
+```
+(Opcional) Manual network setup for hosts in Mininet:
 h1 ifconfig h1-eth0 10.10.10.10/24
 h1 ifconfig h1-eth1 10.10.20.10/24
 h1 ip route add 10.10.10.0/24 dev h1-eth0 scope link table 1
@@ -296,28 +317,38 @@ h2 ip rule add from 10.10.20.30 table 2
 h2 ip rule show
 h2 ip route
 h2 ip route show table 1
-
-4.3)
+```
+4.3) (Opcional) Open terminals in Mininet environment:
+```
    h1 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h1
    h2 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h2
+```
 
-4.4) h2: iperf -s
-     h1: iperf -c 10.10.10.20 -t 100
+4.4) (Opcional) Run iperf in Mininet hosts:
 
-5) Wireshark
+```
+h2: iperf -s
+h1: iperf -c 10.10.10.20 -t 100
+```
 
-%%%%%%%%%%%%%%%%%%%
-iperfmulti3: baseado em http://www.muzixing.com/pages/2015/02/22/fattree-topo-and-iperfmulti-function-in-mininet.html
+5) (Opcional) Use Wireshark to verify MPTCP subflows.
 
-Editar o arquivo mininet/mininet/net.py:
+6) (Opcional) Iperf3multi: it is a function written in Python that simultaneously runs iperf3 between
+each host instantiated in Mininet. (Based on: http://www.muzixing.com/pages/2015/02/22/fattree-topo-and-iperfmulti-function-in-mininet.html)
 
+You can edit iperf3multi as follow:
 
-Editar o arquivo mininet/mininet/cli.py:
+```
+Edit the file: mininet/mininet/net.py (Look for iperf3multi)
 
-Editar o arquivo para incluir o nome comando: mininet/bin/mn:
+Edit the file: mininet/mininet/cli.py (Look for iperf3multi)
+
+Edit this file to include the new command in Mininet: mininet/bin/mn (Look for iperf3multi)
+
+Run in terminal to update the changes in Mininet:
 
 mininet/util/install -n
-
+```
 
 ## For internal development (only):
 
