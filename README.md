@@ -184,7 +184,9 @@ odl-neutron-hostconfig-ovs
 
 4) Mininet
 
-4.1) For MPTCP tests in Mininet by command line:
+4.1) Run https://github.com/lpdc/lpdc/blob/master/LPDC.py
+
+4.2) (Opcional) For MPTCP tests in Mininet by command line:
 
 ```
 mn --topo tree,2 --controller remote,ip=10.0.0.10,port=6653 --switch=ovsk,protocols=OpenFlow13
@@ -192,7 +194,7 @@ mn --topo tree,2 --controller remote,ip=10.0.0.10,port=6653 --switch=ovsk,protoc
 mn --custom scenario.py --topo scenario --controller remote,ip=127.0.0.1,port=6653 --switch=ovsk,protocols=OpenFlow13
 ```
 
-4.2) (Optional) MPTCP example in Mininet:
+4.3) (Optional) MPTCP example in Mininet:
 
 ```
 #!/usr/bin/python2
@@ -318,13 +320,13 @@ h2 ip rule show
 h2 ip route
 h2 ip route show table 1
 ```
-4.3) (Opcional) Open terminals in Mininet environment:
+4.4) (Opcional) Open terminals in Mininet environment:
 ```
    h1 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h1
    h2 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h2
 ```
 
-4.4) (Opcional) Run iperf in Mininet hosts:
+4.5) (Opcional) Run iperf in Mininet hosts:
 
 ```
 h2: iperf -s
