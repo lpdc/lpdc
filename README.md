@@ -186,7 +186,7 @@ odl-neutron-hostconfig-ovs
 
 4.1) Run https://github.com/lpdc/lpdc/blob/master/LPDC.py
 
-4.2) (Opcional) For MPTCP tests in Mininet by command line:
+4.2) (Optional) For MPTCP tests in Mininet by command line:
 
 ```
 mn --topo tree,2 --controller remote,ip=10.0.0.10,port=6653 --switch=ovsk,protocols=OpenFlow13
@@ -291,7 +291,7 @@ if __name__ == '__main__':
 
 ```
 ```
-(Opcional) Manual network setup for hosts in Mininet:
+(Optional) Manual network setup for hosts in Mininet:
 h1 ifconfig h1-eth0 10.10.10.10/24
 h1 ifconfig h1-eth1 10.10.20.10/24
 h1 ip route add 10.10.10.0/24 dev h1-eth0 scope link table 1
@@ -320,22 +320,22 @@ h2 ip rule show
 h2 ip route
 h2 ip route show table 1
 ```
-4.4) (Opcional) Open terminals in Mininet environment:
+4.4) (Optional) Open terminals in Mininet environment:
 ```
    h1 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h1
    h2 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h2
 ```
 
-4.5) (Opcional) Run iperf in Mininet hosts:
+4.5) (Optional) Run iperf in Mininet hosts:
 
 ```
 h2: iperf -s
 h1: iperf -c 10.10.10.20 -t 100
 ```
 
-5) (Opcional) Use Wireshark to verify MPTCP subflows.
+5) (Optional) Use Wireshark to verify MPTCP subflows.
 
-6) (Opcional) Iperf3multi (See the folder _mininet_scripts_).
+6) (Optional) Iperf3multi (See the folder _mininet_scripts_).
 
 Iperf3multi is a function written in Python that simultaneously runs iperf3 between
 each host instantiated in Mininet. (Based on: http://www.muzixing.com/pages/2015/02/22/fattree-topo-and-iperfmulti-function-in-mininet.html)
