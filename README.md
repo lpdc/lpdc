@@ -7,63 +7,105 @@ The code for GLPK is available here: https://github.com/lpdc/lpdc/blob/master/LP
 ## How to run this project:
 
 0) Recompilar o kernel MPTCP
-  make menuconfig
-  make
-  make modules_install
+
+make menuconfig
+
+make
+
+make modules_install
   
 0.1) dmesg | grep MPTCP
 
 1) Iniciar com o kernel correto: (-A100 para mostrar ate 100 matches)
-  grep -A100 submenu /boot/grub/grub.cfg | grep menuentry
+
+grep -A100 submenu /boot/grub/grub.cfg | grep menuentry
+
 1.1) Concatenar as entries pai e filho:
-    Inserir em /etc/default/grub:
-    GRUB_DEFAULT=0gnulinux-advanced...>gnulinux-4.19.105+-advanced...
-    update-grub
-    reboot
+
+Inserir em /etc/default/grub:
+
+GRUB_DEFAULT=0gnulinux-advanced...>gnulinux-4.19.105+-advanced...
+
+update-grub
+
+reboot
    
 2.1) Carregar os módulos MPTCP:
-   #ls /lib/modules/4.19.105+/kernel/net/mptcp
-   #lsmod
-      modprobe mctcp_desync
-   #modprobe mptcp_balia
-   #modprobe mptcp_binder
-      modprobe mptcp_blest
-   #modprobe mptcp_coupled
-      modprobe mptcp_fullmesh
-   #modprobe mptcp_ndiffports
-      modprobe mptcp_netlink
-   #modprobe mptcp_olia
-      modprobe mptcp_redundant
-      modprobe mptcp_rr
-      modprobe mptcp_wvegas
-   #cat /proc/sys/net/ipv4/tcp_congestion_control
-   sysctl -w net.mptcp.enabled=1
-   sysctl -w net.ipv4.tcp_congestion_control=olia  //cubic uncoupled trata caminhos individualmente (better according wang2017)
-   sysctl -w net.mptcp.mptcp_path_manager=fullmesh
-   echo 5 > /sys/module/mptcp_fullmesh/parameters/num_subflows
-   sysctl -p  (Nota: carrega tambem o que estah em /etc/sysctl.conf) 
+
+#ls /lib/modules/4.19.105+/kernel/net/mptcp
+
+#lsmod
+
+modprobe mctcp_desync
+
+#modprobe mptcp_balia
+
+#modprobe mptcp_binder
+
+modprobe mptcp_blest
+
+#modprobe mptcp_coupled
+
+modprobe mptcp_fullmesh
+
+#modprobe mptcp_ndiffports
+
+modprobe mptcp_netlink
+
+#modprobe mptcp_olia
+
+modprobe mptcp_redundant
+
+modprobe mptcp_rr
+
+modprobe mptcp_wvegas
+
+#cat /proc/sys/net/ipv4/tcp_congestion_control
+
+sysctl -w net.mptcp.enabled=1
+
+sysctl -w net.ipv4.tcp_congestion_control=olia  //cubic uncoupled trata caminhos individualmente (better according wang2017)
+
+sysctl -w net.mptcp.mptcp_path_manager=fullmesh
+
+echo 5 > /sys/module/mptcp_fullmesh/parameters/num_subflows
+
+sysctl -p  (Nota: carrega tambem o que estah em /etc/sysctl.conf) 
 
 2.2)
 #List the operating system settings
-  #cat /etc/os-release
+
+#cat /etc/os-release
    
-  #List all system variables
-  sysctl -a
 
-  #Verify the available TCP congestion control
-  #cat /proc/sys/net/ipv4/tcp_congestion_control
+#List all system variables
 
-  #Load the new TCP congestion control
-  modprobe balia
+sysctl -a
 
-  #Setup the new MPTCP congestion control
-  sysctl -w net.ipv4.tcp_congestion_control=balia
 
-  #Setup the topology manager
-  sysctl -w net.mptcp.mptcp_path_manager=fullmesh
+#Verify the available TCP congestion control
 
-  #Reload the changes
-  sysctl -p
+#cat /proc/sys/net/ipv4/tcp_congestion_control
+
+
+#Load the new TCP congestion control
+
+modprobe balia
+
+
+#Setup the new MPTCP congestion control
+
+sysctl -w net.ipv4.tcp_congestion_control=balia
+
+
+#Setup the topology manager
+
+sysctl -w net.mptcp.mptcp_path_manager=fullmesh
+
+
+#Reload the changes
+
+sysctl -p
 
 
 2.3) echo $subflows > /sys/module/mptcp_fullmesh/parameters/num_subflows
@@ -71,10 +113,12 @@ The code for GLPK is available here: https://github.com/lpdc/lpdc/blob/master/LP
 2.4) Setup the MPTCP scheduler (e.g. default, roundrobin or redundant):
 
   sysctl -w net.mptcp.mptcp_scheduler=default
-  sysctl -p
+
+sysctl -p
 
 2.5) In order to compare MPTCP flows with regular TCP flows~\cite{Sigcomm2013Walkthrough}:
-  sysctl -w net.mptcp.mptcp_enabled=0
+
+sysctl -w net.mptcp.mptcp_enabled=0
 
 3.1) (Optional) karaf clean
 
@@ -96,6 +140,7 @@ odl-neutron-hostconfig-ovs
 4.1) Mininet
 
 #For tests in command line:
+
 mn --topo tree,2 --controller remote,ip=10.0.0.10,port=6653 --switch=ovsk,protocols=OpenFlow13
 
 mn --custom scenario.py --topo scenario --controller remote,ip=127.0.0.1,port=6653 --switch=ovsk,protocols=OpenFlow13
@@ -103,26 +148,26 @@ mn --custom scenario.py --topo scenario --controller remote,ip=127.0.0.1,port=66
 
 4.2) (Optional) Mininet example for MPTCP
 
-#!/usr/bin/python2
-#
-# To run: ./scenario5.py
-#
-# Note: controller port for OpenDaylight: 6633
-#
-#                 H1
-#            (0)     (1)
-#             /        \ 
-#          (1)         (1)
-#           S1(3)---(3)S2
-#          (2)         (2)
-#            |          |
-#          (2)         (2)
-#           S3(3)---(3)S4
-#          (1)         (1)
-#             \        /
-#            (0)     (1)
-#                 H2
-#                 
+\#!/usr/bin/python2
+\#
+\# To run: ./scenario5.py
+\#
+\# Note: controller port for OpenDaylight: 6633
+\#
+\#                 H1
+\#            (0)     (1)
+\#             /        \ 
+\#          (1)         (1)
+\#           S1(3)---(3)S2
+\#          (2)         (2)
+\#            |          |
+\#          (2)         (2)
+\#           S3(3)---(3)S4
+\#          (1)         (1)
+\#             \        /
+\#            (0)     (1)
+\#                 H2
+\#                 
 from mininet.net import Mininet
 from mininet.node import Controller,RemoteController,OVSKernelSwitch,UserSwitch
 from mininet.cli import CLI
