@@ -1,11 +1,3 @@
-## Linear Programming for Data Center
-
-The code for Mininet is available here: https://github.com/lpdc/lpdc/blob/master/LPDC.py
-
-The code for GLPK is available here: https://github.com/lpdc/lpdc/blob/master/LPDC.mod
-
-## How to run this project:
-
 0) Recompilar o kernel MPTCP
   make menuconfig
   make
@@ -245,15 +237,3 @@ Editar o arquivo para incluir o nome comando: mininet/bin/mn:
 
 mininet/util/install -n
 
-
-## For internal development (only):
-
-git init
-
-git add *
-
-git commit -m "Release"
-
-git remote add origin https://github.com/lpdc/lpdc.git
-
-git push origin master
