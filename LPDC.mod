@@ -105,18 +105,7 @@ s.t. FIN27: link[26,27] + link[28,27] = link[27,21];
 s.t. FIN28: link[29,28]               = link[28,27] + link[28,22];
 s.t. FIN29: link[24,29]               = link[29,23] + link[29,28];
 
-/*
-Should remove src AZ nodes
-s.t. FLOW{k in V}:
-   sum{i in V} link[i,k] - sum{j in V} link[k,j] = 0;
-*/
 
-/* conservacao origens x destino */
-/*s.t. DESTINO: link[1,2] + link[1,8] +
-           link[7,6] + link[7,12] +
-           link[18,19] + link[18,25] +
-           link[24,23] + link[24,29] = sum {k in V} link[k,dst];
-*/
 s.t. DESTINO:
    sum{i in NUM} (sum{j in V} link[i,j]) = sum {k in V} link[k,dst]; 
 
@@ -135,13 +124,6 @@ set J := 1 7 18 24;
 
 /* NUM: num de sources */
 set NUM := 1 7 18 24;
-
-/* Nota: geracao do fluxo. Cada fonte soh gera factivel se <= capacidade do link  */
-/*param SRC :=
-1 2000
-7 1000
-18 500
-24 500;*/
 
 /* destino: sink node */
 param dst := 15;
