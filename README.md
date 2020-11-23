@@ -89,7 +89,7 @@ modprobe mptcp_wvegas
 
 sysctl -w net.mptcp.enabled=1
 
-sysctl -w net.ipv4.tcp_congestion_control=olia  //cubic uncoupled trata caminhos individualmente (better according wang2017)
+sysctl -w net.ipv4.tcp_congestion_control=olia  
 
 sysctl -w net.mptcp.mptcp_path_manager=fullmesh
 
