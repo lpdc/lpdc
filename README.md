@@ -148,8 +148,8 @@ mn --custom scenario.py --topo scenario --controller remote,ip=127.0.0.1,port=66
 
 4.2) (Optional) Mininet example for MPTCP
 
-\#!/usr/bin/python2
-\#
+>#!/usr/bin/python2
+>#
 \# To run: ./scenario5.py
 \#
 \# Note: controller port for OpenDaylight: 6633
@@ -271,9 +271,11 @@ h2 ip route show table 1
 
 4.3)
    h1 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h1
+   
    h2 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h2
 
 4.4) h2: iperf -s
+
      h1: iperf -c 10.10.10.20 -t 100
 
 5) Wireshark
