@@ -148,26 +148,6 @@ mn --custom scenario.py --topo scenario --controller remote,ip=127.0.0.1,port=66
 
 4.2) (Optional) Mininet example for MPTCP
 
->#!/usr/bin/python2
->#
-># To run: ./scenario5.py
->#
-># Note: controller port for OpenDaylight: 6633
->#
->#                 H1
->#            (0)     (1)
->#             /        \ 
->#          (1)         (1)
->#           S1(3)---(3)S2
->#          (2)         (2)
->#            |          |
->#          (2)         (2)
->#           S3(3)---(3)S4
->#          (1)         (1)
->#             \        /
->#            (0)     (1)
->#                 H2
->#                 
 >from mininet.net import Mininet
 >from mininet.node import Controller,RemoteController,OVSKernelSwitch,UserSwitch
 >from mininet.cli import CLI
