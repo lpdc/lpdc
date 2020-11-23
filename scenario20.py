@@ -1,14 +1,15 @@
 #!/usr/bin/python2
 
-# Scenario20.py
-#
 # Intra Data Center MultiPath Optimization with
 # Emulated Software Defined Networks
 #
-# To run: mn -c && ./scenario20.py
+# How to run (Mininet):
+#    mn -c && ./scenario20.py
 #
 # Note: controller port for OpenDaylight: 6653
 #
+# Author: Lucio A. Rocha
+# Last update: 23/11/2020
 #
 #Network:
 #
