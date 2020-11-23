@@ -148,114 +148,135 @@ mn --custom scenario.py --topo scenario --controller remote,ip=127.0.0.1,port=66
 
 4.2) (Optional) Mininet example for MPTCP
 
->from mininet.net import Mininet
->from mininet.node import Controller,RemoteController,OVSKernelSwitch,UserSwitch
->from mininet.cli import CLI
->from mininet.log import setLogLevel
->from mininet.link import Link,TCLink
->
->def topology():
->    net = Mininet(controller=RemoteController, link=TCLink,switch=OVSKernelSwitch)
->    print('Creating nodes')
->    h1 = net.addHost('h1',ip='10.10.10.10/24', mac='00:00:00:00:00:01')
->    h2 = net.addHost('h2',ip='10.10.10.30/24', mac='00:00:00:00:00:02')
->    s1 = net.addSwitch('s1', listenPort=6671, mac='00:00:00:00:00:03')
->    s2 = net.addSwitch('s2', listenPort=6672, mac='00:00:00:00:00:04')
->    s3 = net.addSwitch('s3', listenPort=6673, mac='00:00:00:00:00:03')
->    s4 = net.addSwitch('s4', listenPort=6674, mac='00:00:00:00:00:04')
->    c0 = net.addController('c0', controller=RemoteController, ip='127.0.0.1', port=6633)
->    print('Creating links')
->
->    #Note: zero port is for controller in the switches
->    
->    #net.addLink(h1,s1,0,1) #h1 port 0---s1 in port 1
->    Link(h1,s1, intfName1='h1-eth0')
->    net.addLink(s1,s3,2,2)
->    net.addLink(h2,s3,0,1)
->    
->    Link(h1,s2, intfName2='h1-eth1')
->    net.addLink(s2,s4,2,2)
->    net.addLink(h2,s4,1,1)
->
->    net.addLink(s1,s2,3,3)
->    net.addLink(s3,s4,3,3)
->
->    
->    h1.cmd('ifconfig h1-eth0 10.10.10.10/24')
->    h1.cmd('ifconfig h1-eth1 10.10.20.10/24')
->    h2.cmd('ifconfig h2-eth0 10.10.10.30/24')
->    h2.cmd('ifconfig h2-eth1 10.10.20.30/24')
->    
->    h1.cmd('ip route add 10.10.10.0/24 dev h1-eth0 scope link table 1')
->    h1.cmd('ip route add default via 10.10.10.30 dev h1-eth0 table 1')
->    h1.cmd('ip route add 10.10.20.0/24 dev h1-eth1 scope link table 2')
->    h1.cmd('ip route add default via 10.10.20.30 dev h1-eth1 table 2')
->    h1.cmd('ip route add default scope global nexthop via 10.10.10.30 dev h1-eth0')
->    h1.cmd('ip rule add from 10.10.10.10 table 1')
->    h1.cmd('ip rule add from 10.10.20.10 table 2')
->
->    h2.cmd('ip route add 10.10.10.0/24 dev h2-eth0 scope link table 1')
->    h2.cmd('ip route add default via 10.10.10.10 dev h2-eth0 table 1')
->    h2.cmd('ip route add 10.10.20.0/24 dev h2-eth1 scope link table 2')
->    h2.cmd('ip route add default via 10.10.20.10 dev h2-eth1 table 2')
->    h2.cmd('ip route add default scope global nexthop via 10.10.10.10 dev h2-eth0')
->    h2.cmd('ip rule add from 10.10.10.30 table 1')
->    h2.cmd('ip rule add from 10.10.20.30 table 2')
->    
->    print('Starting network')
->    net.build()
->    c0.start()
->    s1.start([c0])
->    s2.start([c0])
->    s3.start([c0])
->    s4.start([c0])
->
->    print('Running CLI')
->    CLI(net)
->
->    print('Stopping network')
->    net.stop()
->    
->if __name__ == '__main__':
->    setLogLevel('info')
->    topology()
+```
+#!/usr/bin/python2
+#
+# To run: ./scenario5.py
+#
+# Note: controller port for OpenDaylight: 6633
+#
+#                 H1
+#            (0)     (1)
+#             /        \ 
+#          (1)         (1)
+#           S1(3)---(3)S2
+#          (2)         (2)
+#            |          |
+#          (2)         (2)
+#           S3(3)---(3)S4
+#          (1)         (1)
+#             \        /
+#            (0)     (1)
+#                 H2
+#                 
+from mininet.net import Mininet
+from mininet.node import Controller,RemoteController,OVSKernelSwitch,UserSwitch
+from mininet.cli import CLI
+from mininet.log import setLogLevel
+from mininet.link import Link,TCLink
 
->#Manual setup:
->h1 ifconfig h1-eth0 10.10.10.10/24
->h1 ifconfig h1-eth1 10.10.20.10/24
->h1 ip route add 10.10.10.0/24 dev h1-eth0 scope link table 1
->h1 ip route add default via 10.10.10.30 dev h1-eth0 table 1
->h1 ip route add 10.10.20.0/24 dev h1-eth1 scope link table 2
->h1 ip route add default via 10.10.20.30 dev h1-eth1 table 2
->h1 ip route add default scope global nexthop via 10.10.10.30 dev h1-eth0
->h1 ip rule show
->h1 ip rule add from 10.10.10.10 table 1
->h1 ip rule add from 10.10.20.10 table 2
->h1 ip rule show
->h1 ip route
->h1 ip route show table 1
->%-----------------------
->h2 ifconfig h2-eth0 10.10.10.30/24
->h2 ifconfig h2-eth1 10.10.20.30/24
->h2 ip route add 10.10.10.0/24 dev h2-eth0 scope link table 1
->h2 ip route add default via 10.10.10.10 dev h2-eth0 table 1
->h2 ip route add 10.10.20.0/24 dev h2-eth1 scope link table 2
->h2 ip route add default via 10.10.20.10 dev h2-eth1 table 2
->h2 ip route add default scope global nexthop via 10.10.10.10 dev h2-eth0
->h2 ip rule show
->h2 ip rule add from 10.10.10.30 table 1
->h2 ip rule add from 10.10.20.30 table 2
->h2 ip rule show
->h2 ip route
->h2 ip route show table 1
+def topology():
+    net = Mininet(controller=RemoteController, link=TCLink,switch=OVSKernelSwitch)
+    print('Creating nodes')
+    h1 = net.addHost('h1',ip='10.10.10.10/24', mac='00:00:00:00:00:01')
+    h2 = net.addHost('h2',ip='10.10.10.30/24', mac='00:00:00:00:00:02')
+    s1 = net.addSwitch('s1', listenPort=6671, mac='00:00:00:00:00:03')
+    s2 = net.addSwitch('s2', listenPort=6672, mac='00:00:00:00:00:04')
+    s3 = net.addSwitch('s3', listenPort=6673, mac='00:00:00:00:00:03')
+    s4 = net.addSwitch('s4', listenPort=6674, mac='00:00:00:00:00:04')
+    c0 = net.addController('c0', controller=RemoteController, ip='127.0.0.1', port=6633)
+    print('Creating links')
+
+    #Note: zero port is for controller in the switches
+    
+    #net.addLink(h1,s1,0,1) #h1 port 0---s1 in port 1
+    Link(h1,s1, intfName1='h1-eth0')
+    net.addLink(s1,s3,2,2)
+    net.addLink(h2,s3,0,1)
+    
+    Link(h1,s2, intfName2='h1-eth1')
+    net.addLink(s2,s4,2,2)
+    net.addLink(h2,s4,1,1)
+
+    net.addLink(s1,s2,3,3)
+    net.addLink(s3,s4,3,3)
+
+    
+    h1.cmd('ifconfig h1-eth0 10.10.10.10/24')
+    h1.cmd('ifconfig h1-eth1 10.10.20.10/24')
+    h2.cmd('ifconfig h2-eth0 10.10.10.30/24')
+    h2.cmd('ifconfig h2-eth1 10.10.20.30/24')
+    
+    h1.cmd('ip route add 10.10.10.0/24 dev h1-eth0 scope link table 1')
+    h1.cmd('ip route add default via 10.10.10.30 dev h1-eth0 table 1')
+    h1.cmd('ip route add 10.10.20.0/24 dev h1-eth1 scope link table 2')
+    h1.cmd('ip route add default via 10.10.20.30 dev h1-eth1 table 2')
+    h1.cmd('ip route add default scope global nexthop via 10.10.10.30 dev h1-eth0')
+    h1.cmd('ip rule add from 10.10.10.10 table 1')
+    h1.cmd('ip rule add from 10.10.20.10 table 2')
+
+    h2.cmd('ip route add 10.10.10.0/24 dev h2-eth0 scope link table 1')
+    h2.cmd('ip route add default via 10.10.10.10 dev h2-eth0 table 1')
+    h2.cmd('ip route add 10.10.20.0/24 dev h2-eth1 scope link table 2')
+    h2.cmd('ip route add default via 10.10.20.10 dev h2-eth1 table 2')
+    h2.cmd('ip route add default scope global nexthop via 10.10.10.10 dev h2-eth0')
+    h2.cmd('ip rule add from 10.10.10.30 table 1')
+    h2.cmd('ip rule add from 10.10.20.30 table 2')
+    
+    print('Starting network')
+    net.build()
+    c0.start()
+    s1.start([c0])
+    s2.start([c0])
+    s3.start([c0])
+    s4.start([c0])
+
+    print('Running CLI')
+    CLI(net)
+
+    print('Stopping network')
+    net.stop()
+    
+if __name__ == '__main__':
+    setLogLevel('info')
+    topology()
+
+```
+
+%%%%%Manual setup:
+h1 ifconfig h1-eth0 10.10.10.10/24
+h1 ifconfig h1-eth1 10.10.20.10/24
+h1 ip route add 10.10.10.0/24 dev h1-eth0 scope link table 1
+h1 ip route add default via 10.10.10.30 dev h1-eth0 table 1
+h1 ip route add 10.10.20.0/24 dev h1-eth1 scope link table 2
+h1 ip route add default via 10.10.20.30 dev h1-eth1 table 2
+h1 ip route add default scope global nexthop via 10.10.10.30 dev h1-eth0
+h1 ip rule show
+h1 ip rule add from 10.10.10.10 table 1
+h1 ip rule add from 10.10.20.10 table 2
+h1 ip rule show
+h1 ip route
+h1 ip route show table 1
+%-----------------------
+h2 ifconfig h2-eth0 10.10.10.30/24
+h2 ifconfig h2-eth1 10.10.20.30/24
+h2 ip route add 10.10.10.0/24 dev h2-eth0 scope link table 1
+h2 ip route add default via 10.10.10.10 dev h2-eth0 table 1
+h2 ip route add 10.10.20.0/24 dev h2-eth1 scope link table 2
+h2 ip route add default via 10.10.20.10 dev h2-eth1 table 2
+h2 ip route add default scope global nexthop via 10.10.10.10 dev h2-eth0
+h2 ip rule show
+h2 ip rule add from 10.10.10.30 table 1
+h2 ip rule add from 10.10.20.30 table 2
+h2 ip rule show
+h2 ip route
+h2 ip route show table 1
 
 4.3)
    h1 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h1
-   
    h2 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h2
 
 4.4) h2: iperf -s
-
      h1: iperf -c 10.10.10.20 -t 100
 
 5) Wireshark
