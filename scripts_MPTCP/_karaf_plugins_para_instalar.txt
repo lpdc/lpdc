@@ -1,0 +1,26 @@
+# Intra Data Center MultiPath Optimization with
+# Emulated Software Defined Networks
+#
+# Description: this file is only informative.
+# The following command must be done in Karaf
+# to set the plugins to this project run properly.
+#
+# Karaf version (only): 0.8.4 
+#
+# Author: Lucio A. Rocha
+# Last update: 23/11/2020
+
+feature:install \
+odl-dluxapps-applications \
+odl-dlux-core \
+odl-dluxapps-nodes \
+odl-dluxapps-yangui \
+odl-mdsal-apidocs \
+odl-mdsal-all \
+odl-l2switch-all \
+odl-l2switch-switch \
+odl-l2switch-switch-ui \
+odl-l2switch-switch-rest \
+odl-neutron-service \
+odl-neutron-northbound-api \
+odl-neutron-hostconfig-ovs
