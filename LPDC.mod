@@ -6,7 +6,7 @@
    Description: Linear programming model for GLPK.
   
    How to run:
-       ./glpsol --model LPDC.mod --wlp LPDC.lp --output LPDC.dat --exact/
+       ./glpsol --model LPDC.mod --wlp LPDC.lp --output LPDC.dat --exact
    (Opcional) ./glpsol LPDC.lp --lp --exact --output LPDC.dat 
 
 */
