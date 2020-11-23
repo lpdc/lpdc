@@ -290,8 +290,9 @@ if __name__ == '__main__':
     topology()
 
 ```
+
+4.4) (Optional) Manual network setup for hosts in Mininet:
 ```
-(Optional) Manual network setup for hosts in Mininet:
 h1 ifconfig h1-eth0 10.10.10.10/24
 h1 ifconfig h1-eth1 10.10.20.10/24
 h1 ip route add 10.10.10.0/24 dev h1-eth0 scope link table 1
@@ -320,13 +321,14 @@ h2 ip rule show
 h2 ip route
 h2 ip route show table 1
 ```
-4.4) (Optional) Open terminals in Mininet environment:
+
+4.5) (Optional) Open terminals in Mininet environment:
 ```
    h1 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h1
    h2 xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T h2
 ```
 
-4.5) (Optional) Run iperf in Mininet hosts:
+4.6) (Optional) Run iperf in Mininet hosts:
 
 ```
 h2: iperf -s
