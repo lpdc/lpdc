@@ -335,7 +335,7 @@ h1: iperf -c 10.10.10.20 -t 100
 
 5) (Opcional) Use Wireshark to verify MPTCP subflows.
 
-6) (Opcional) Iperf3multi (See the folder ***Bold***mininet_scripts***Bold***).
+6) (Opcional) Iperf3multi (See the folder _mininet_scripts_).
 
 Iperf3multi is a function written in Python that simultaneously runs iperf3 between
 each host instantiated in Mininet. (Based on: http://www.muzixing.com/pages/2015/02/22/fattree-topo-and-iperfmulti-function-in-mininet.html)
@@ -353,6 +353,8 @@ Run in terminal to update the changes in Mininet:
 
 mininet/util/install -n
 ```
+
+7) (Optional) Graphics with Gnuplot (See the folder _scripts_MPTCP_)
 
 ## For internal development (only):
 
