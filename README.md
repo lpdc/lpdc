@@ -1,5 +1,9 @@
 ## Linear Programming for Data Center
 
+The code for Mininet is available here: github.com/lpdc/lpdc/blob/master/scenario20.py
+
+## For internal development (only):
+
 git init
 
 git add *
