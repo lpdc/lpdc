@@ -6,29 +6,53 @@ The code for GLPK is available here: https://github.com/lpdc/lpdc/blob/master/LP
 
 ## How to run this project:
 
-0) Recompilar o kernel MPTCP
+0) Recompile the MPTCP kernel: (https://multipath-tcp.org)
 
-make menuconfig
+```
+# make menuconfig
 
-make
+# make
 
-make modules_install
-  
-0.1) dmesg | grep MPTCP
+# make modules_install
+```
 
-1) Iniciar com o kernel correto: (-A100 para mostrar ate 100 matches)
+0.1) Reboot the operating system. Verify the MPTCP enabled in the kernel:
 
-grep -A100 submenu /boot/grub/grub.cfg | grep menuentry
+```
+# dmesg | grep MPTCP
+```
 
-1.1) Concatenar as entries pai e filho:
+1) Ubuntu: Setup GRUB to start with the MPTCP kernel by default ('-A100' to show until 100 matches)
 
-Inserir em /etc/default/grub:
+```
+# grep -A100 submenu /boot/grub/grub.cfg | grep menuentry
 
-GRUB_DEFAULT=0gnulinux-advanced...>gnulinux-4.19.105+-advanced...
+...
+...
+(Default kernel)
+menuentry 'Ubuntu, with Linux 5.4.0-21-generic' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-5.4.0-21-generic-advanced-b5b06d70-ea98-45ab-be8a-55b2fcec9baf'
+...
+(MPTCP kernel)
+menuentry 'Ubuntu, with Linux 4.19.105+' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-4.19.105+-advanced-b5b06d70-ea98-45ab-be8a-55b2fcec9baf'
+...
+```
 
-update-grub
+1.1) From the previous output, insert in '/etc/default/grub':
 
-reboot
+```
+GRUB_DEFAULT="DEFAULT_KERNEL>NEW_MPTCP_KERNEL"
+
+For example:
+GRUB_DEFAULT="gnulinux-advanced-b5b06d70-ea98-45ab-be8a-55b2fcec9baf>gnulinux-4.19.105+-advanced-b5b06d70-ea98-45ab-be8a-55b2fcec9baf"
+```
+
+1.2) In terminal:
+
+```
+# update-grub
+
+# reboot
+```
    
 2.1) Carregar os módulos MPTCP:
 
@@ -141,17 +165,18 @@ odl-neutron-hostconfig-ovs
 
 #For tests in command line:
 
+```
 mn --topo tree,2 --controller remote,ip=10.0.0.10,port=6653 --switch=ovsk,protocols=OpenFlow13
 
 mn --custom scenario.py --topo scenario --controller remote,ip=127.0.0.1,port=6653 --switch=ovsk,protocols=OpenFlow13
-
+```
 
 4.2) (Optional) Mininet example for MPTCP
 
 ```
 #!/usr/bin/python2
 #
-# To run: ./scenario5.py
+# To run: ./scenario.py
 #
 # Note: controller port for OpenDaylight: 6633
 #
