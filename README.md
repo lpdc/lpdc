@@ -1,6 +1,6 @@
 ## Linear Programming for Data Center
 
-The results are publicaly available at: https://mfr.au-1.osf.io/render?url=https://osf.io/fwuyx/?direct%26mode=render%26action=download%26mode=render
+The results are publicaly available at: https://osf.io/fwuyx/
 
 The code for GLPK is available here: https://github.com/lpdc/lpdc/blob/master/LPDC.mod
 
