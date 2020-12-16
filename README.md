@@ -1,10 +1,15 @@
 ## Linear Programming for Data Center
 
 The results are publicaly available at: https://osf.io/fwuyx/
+```
+MD5SUM: 1c84e4142e0c72193ddd18d971b859d5  scenario12_results.ods
+```
 
 The code for GLPK is available here: https://github.com/lpdc/lpdc/blob/master/LPDC.mod
 
 The code for MPTCP in Mininet is available here: https://github.com/lpdc/lpdc/blob/master/LPDC.py
+
+
 
 ## How to run this project:
 
@@ -371,3 +376,4 @@ git commit -m "Release"
 git remote add origin https://github.com/lpdc/lpdc.git
 
 git push origin master
+
