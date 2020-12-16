@@ -7,9 +7,15 @@ MD5SUM: 1c84e4142e0c72193ddd18d971b859d5  scenario12_results.ods
 
 The code for GLPK is available here: https://github.com/lpdc/lpdc/blob/master/LPDC.mod
 
+```
+MD5SUM: 72a337ee5d5af41e1ebcfba2fb24f5fc LPDC.mod
+```
+
 The code for MPTCP in Mininet is available here: https://github.com/lpdc/lpdc/blob/master/LPDC.py
 
-
+```
+MD5SUM: 731c61a1c1d0dc27c59987f179b7f37a LPDC.py
+```
 
 ## How to run this project:
 
@@ -376,4 +382,5 @@ git commit -m "Release"
 git remote add origin https://github.com/lpdc/lpdc.git
 
 git push origin master
+
 
