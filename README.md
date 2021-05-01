@@ -1,5 +1,9 @@
 ## Linear Programming for Data Center
 
+How to cite this work:
+
+Rocha, L. A. "Intra Data Center MultiPath Optimization with Emulated Software Defined Networks". The 35th International Conference on Advanced Information Netowrking and Applications (AINA-2021), Ryerson University, Toronto, Canada, 2021. 
+
 The results are publicaly available at: https://osf.io/fwuyx/
 ```
 MD5SUM: 1c84e4142e0c72193ddd18d971b859d5  scenario12_results.ods
