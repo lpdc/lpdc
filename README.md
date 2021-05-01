@@ -2,8 +2,9 @@
 
 How to cite this work:
 
-Rocha, L. A. "Intra Data Center MultiPath Optimization with Emulated Software Defined Networks". The 35th International Conference on Advanced Information Netowrking and Applications (AINA-2021), Ryerson University, Toronto, Canada, 2021. 
+**Rocha, L. A. "Intra Data Center MultiPath Optimization with Emulated Software Defined Networks". The 35th International Conference on Advanced Information Netowrking and Applications (AINA-2021), Ryerson University, Toronto, Canada, 2021.** 
 
+Contact at: (outrosdiasvirao at gmail.com)
 
 The results are publicaly available at: https://osf.io/fwuyx/
 ```
@@ -383,6 +384,8 @@ git init
 git add *
 
 git commit -m "Release"
+
+git rm --cached .gitignore~
 
 git remote add origin https://github.com/lpdc/lpdc.git
 
