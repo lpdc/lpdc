@@ -187,18 +187,7 @@ karaf
 3.3) Install ODL plugins (See: _karaf_plugins_para_instalar.txt)
 
 ```
-feature:install \
-odl-dluxapps-applications \ 
-odl-dlux-core odl-dluxapps-nodes \ 
-odl-dluxapps-yangui \ 
-odl-mdsal-apidocs odl-mdsal-all \ 
-odl-l2switch-all \
-odl-l2switch-switch \ 
-odl-l2switch-switch-ui \ 
-odl-l2switch-switch-rest \ 
-odl-neutron-service \
-odl-neutron-northbound-api \ 
-odl-neutron-hostconfig-ovs
+feature:install odl-dluxapps-applications odl-dlux-core odl-dluxapps-nodes odl-dluxapps-yangui odl-mdsal-apidocs odl-mdsal-all odl-l2switch-all odl-l2switch-switch odl-l2switch-switch-ui odl-l2switch-switch-rest odl-neutron-service odl-neutron-northbound-api odl-neutron-hostconfig-ovs
 ```
 
 4) Mininet
