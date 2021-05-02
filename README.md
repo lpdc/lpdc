@@ -6,7 +6,7 @@ How to cite this work:
 
 Contact at: [outrosdiasvirao at gmail.com](mailto:outrosdiasvirao@gmail.com)
 
-(ERRATA) Table 2 in AINA 2021 article presents duplicated results.
+(ERRATA) Table 2 in AINA 2021 article presents duplicate results.
 Please, consider the values obtained in this spreeadsheet bellow:
 
 The results are publicaly available at: https://osf.io/qkvj3/
