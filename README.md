@@ -6,9 +6,12 @@ How to cite this work:
 
 Contact at: [outrosdiasvirao at gmail.com](mailto:outrosdiasvirao@gmail.com)
 
-The results are publicaly available at: https://osf.io/fwuyx/
+(ERRATA) Table 2 in AINA 2021 article presents duplicated results.
+Please, consider the values obtained in this spreeadsheet bellow:
+
+The results are publicaly available at: https://osf.io/qkvj3/
 ```
-MD5SUM: 1c84e4142e0c72193ddd18d971b859d5  scenario12_results.ods
+MD5SUM b7305a652872bcf0021a1359b3f221bc  results_with_fixes_for_AINA_2021_article.ods
 ```
 
 The code for GLPK is available here: https://github.com/lpdc/lpdc/blob/master/LPDC.mod
